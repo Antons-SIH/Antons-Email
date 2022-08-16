@@ -2,19 +2,11 @@ const nodeMailer = require("nodemailer");
 // const sgMail = require('@sendgrid/mail')
 // sgMail.setApiKey(process.env.SENDGRID_API_KEY)
 
-var SibApiV3Sdk = require('sib-api-v3-sdk');
-var defaultClient = SibApiV3Sdk.ApiClient.instance;
-var apiKey = defaultClient.authentications['api-key'];
-apiKey.apiKey = process.env.SENDINBLUE;
-var apiInstance = new SibApiV3Sdk.TransactionalEmailsApi();
-var sendSmtpEmail = new SibApiV3Sdk.SendSmtpEmail();
-
-
-
 const mailSender = async (res, receiver, subject, template) => {
 
   const transporter = nodeMailer.createTransport({
     service: process.env.SMTP_SERVICE,
+    secureConnection: true,
     auth: {
       user: process.env.EMAIL_USERNAME,
       pass: process.env.EMAIL_PASSWORD,
@@ -29,6 +21,7 @@ const mailSender = async (res, receiver, subject, template) => {
         to: receiver,
         subject: subject,
         text: template,
+        html:template
       },
       function (err, info) {
         if (err) {
