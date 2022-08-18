@@ -19,7 +19,7 @@ async function reupload(req, res){
   try {
     const { email, name } = req.body;
 
-    const user = `atharvakinikar2001@gmail.com`
+    const user =email;
     const subject = `Failed Verification.`;
     const template =`Hello ${name}! Please Re-upload a clear image of your document for verification.`
     //sending mail:
@@ -29,4 +29,18 @@ async function reupload(req, res){
   }
 };
 
-module.exports={verified,reupload}
+async function sendMail(req,res){
+  const{email,msg}=req.body;
+
+  try {
+    const user=email;
+    const subject=`Regarding document verification on AICTE portal.`
+    const template=msg;
+    mailSender(res,user,subject,template)
+  } catch (error) {
+    console.log(err);
+  }
+  
+}
+
+module.exports={verified,reupload,sendMail}
